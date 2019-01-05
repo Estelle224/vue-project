@@ -6,6 +6,7 @@ import router from './router'
 // 此处为element UI 提供的引入资源
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import moment from 'moment'
 
 // 引入样式文件base.css
 import '@/assets/base.css'
