@@ -22,13 +22,18 @@
         <el-menu
           default-active="2"
           :unique-opened ="true"
+          router
         >
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>用户管理</span>
             </template>
+<<<<<<< HEAD
             <el-menu-item index="users">
+=======
+            <el-menu-item index="user">
+>>>>>>> dev-user
               <i class="el-icon-menu"></i>
               <span>用户列表</span>
             </el-menu-item>
@@ -94,7 +99,11 @@
       </el-aside>
     <!-- 主要内容部分 -->
       <el-main class="main">
+<<<<<<< HEAD
         <router-view></router-view>
+=======
+          <router-view></router-view>
+>>>>>>> dev-user
       </el-main>
     </el-container>
   </el-container>
@@ -140,7 +149,13 @@ export default {
 .loginout {
   line-height: 60px;
 }
+<<<<<<< HEAD
 /* .main {
   background: rebeccapurple;
 } */
+=======
+.main {
+  background: #E8EDF3;
+}
+>>>>>>> dev-user
 </style>
