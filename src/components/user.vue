@@ -333,7 +333,7 @@ export default {
           "&pagesize=" +
           this.pagesize
       );
-      // console.log(userData);
+      console.log(userData);
       // 结构赋值
       const {
         data: {
