@@ -1,11 +1,7 @@
 <template>
   <el-card class="box-card">
     <!-- 面包屑 -->
-    <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-      <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-    </el-breadcrumb>
+    <my-bread level1="用户管理" level2="用户列表"></my-bread>
     <!-- 输入框+按钮 -->
     <el-row>
       <el-col>
@@ -50,7 +46,14 @@
             size="small"
             @click="showUserEdit(list.row)"
           ></el-button>
-          <el-button type="success" icon="el-icon-check" circle plain size="small" @click="showRole(list.row)"></el-button>
+          <el-button
+            type="success"
+            icon="el-icon-check"
+            circle
+            plain
+            size="small"
+            @click="showRole(list.row)"
+          ></el-button>
           <el-button
             type="danger"
             icon="el-icon-delete"
@@ -125,16 +128,14 @@
     <!-- 分配权限对话框 -->
     <el-dialog title="分配角色" :visible.sync="dialogFormVisibleRole">
       <el-form :model="Userform">
-        <el-form-item label="用户名" :label-width="formLabelWidth">
-          {{Userform.username}}
-        </el-form-item>
+        <el-form-item label="用户名" :label-width="formLabelWidth">{{Userform.username}}</el-form-item>
         <el-form-item label="角色" :label-width="formLabelWidth">
           <!-- 注意：currentRole默认值是选中value值相等的作为默认值
-           -->
+          -->
           {{currentRole}}
           <el-select v-model="currentRole">
             <el-option label="请选择" :value="-1"></el-option>
-            <el-option v-for="(v,i) in role" :key='i' :label="v.roleName" :value="v.id"></el-option>
+            <el-option v-for="(v,i) in role" :key="i" :label="v.roleName" :value="v.id"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -143,7 +144,6 @@
         <el-button type="primary" @click="editRole()">确 定</el-button>
       </div>
     </el-dialog>
-   
   </el-card>
 </template> 
 
@@ -159,7 +159,7 @@ export default {
       // 表单
       dialogFormVisibleadd: false,
       dialogFormVisibleedit: false,
-      dialogFormVisibleRole:false,
+      dialogFormVisibleRole: false,
       formLabelWidth: "120px",
       Userform: {
         username: "",
@@ -167,8 +167,8 @@ export default {
         email: "",
         mobile: ""
       },
-      currentRole:-1,
-      role:[]
+      currentRole: -1,
+      role: []
     };
   },
   methods: {
@@ -176,20 +176,25 @@ export default {
     async editRole() {
       // console.log(this.Userform.id);
       // console.log(this.currentRole)
-       const res =await this.$http.put(`users/${this.Userform.id}/role`,{
-         rid:this.currentRole
-       })
+      const res = await this.$http.put(`users/${this.Userform.id}/role`, {
+        rid: this.currentRole
+      });
       //  console.log(res)
-      const {data:{data,meta:{msg,status}}} =res
+      const {
+        data: {
+          data,
+          meta: { msg, status }
+        }
+      } = res;
       if (status == 200) {
-        this.dialogFormVisibleRole=false
+        this.dialogFormVisibleRole = false;
         this.$message.success(msg);
         this.getUserData();
       }
     },
     // 展示角色分配对话框
     async showRole(user) {
-      this.dialogFormVisibleRole = true
+      this.dialogFormVisibleRole = true;
       // console.log(user);
       // 此时是显示用户的信息
       this.Userform = user;
@@ -197,14 +202,19 @@ export default {
       // 查询用户id查询用户的信息--其中包含角色id
       const searchRole = await this.$http.get(`users/${user.id}`);
       // console.log(searchRole)
-      this.currentRole = searchRole.data.data.rid
+      this.currentRole = searchRole.data.data.rid;
       // 查询用户角色
-      const roles = await this.$http.get('roles')
+      const roles = await this.$http.get("roles");
       // console.log(roles);
-      const {data:{data,meta:{msg,status}}}=roles
+      const {
+        data: {
+          data,
+          meta: { msg, status }
+        }
+      } = roles;
       if (status == 200) {
         this.$message.success(msg);
-        this.role = data 
+        this.role = data;
       }
     },
     // 修改用户状态

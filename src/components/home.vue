@@ -1,6 +1,6 @@
 <template>
   <el-container class="container">
-      <!-- 头部 -->
+    <!-- 头部 -->
     <el-header class="header">
       <el-row>
         <el-col :span="4">
@@ -17,88 +17,27 @@
       </el-row>
     </el-header>
     <el-container>
-    <!-- 侧边栏导航 -->
+      <!-- 侧边栏导航 -->
       <el-aside class="aside" width="200px">
-        <el-menu
-          default-active="2"
-          :unique-opened ="true"
-          router
-        >
-          <el-submenu index="1">
+        <el-menu default-active="2" :unique-opened="true" router>
+           <!--  -->
+          <el-submenu :index="''+v.order" v-for="v in aside1" :key="v.id">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>用户管理</span>
+              <span>{{v.authName}}</span>
             </template>
-
-            <el-menu-item index="user">
+            <el-menu-item :index="v1.path" v-for="v1 in v.children" :key="v1.id">
               <i class="el-icon-menu"></i>
-              <span>用户列表</span>
+              <span>{{v1.authName}}</span>
             </el-menu-item>
           </el-submenu>
 
-          <el-submenu index="2">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>权限管理</span>
-            </template>
-            <el-menu-item index="2-1">
-              <i class="el-icon-menu"></i>
-              <span>角色列表</span>
-            </el-menu-item>
-             <el-menu-item index="2-2">
-              <i class="el-icon-menu"></i>
-              <span>权限列表</span>
-            </el-menu-item>
-          </el-submenu>
-
-          <el-submenu index="3">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>商品管理</span>
-            </template>
-            <el-menu-item index="3-1">
-              <i class="el-icon-menu"></i>
-              <span>商品列表</span>
-            </el-menu-item>
-            <el-menu-item index="3-1">
-              <i class="el-icon-menu"></i>
-              <span>分类参数</span>
-            </el-menu-item>
-            <el-menu-item index="3-1">
-              <i class="el-icon-menu"></i>
-              <span>商品分类</span>
-            </el-menu-item>
-          </el-submenu>
-
-          <el-submenu index="4">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>订单管理</span>
-            </template>
-            <el-menu-item index="4-1">
-              <i class="el-icon-menu"></i>
-              <span>订单列表</span>
-            </el-menu-item>
-          </el-submenu>
-
-          <el-submenu index="5">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>数据管理</span>
-            </template>
-            <el-menu-item index="5-1">
-              <i class="el-icon-menu"></i>
-              <span>数据报表</span>
-            </el-menu-item>
-          </el-submenu>
-
+         
         </el-menu>
       </el-aside>
-    <!-- 主要内容部分 -->
+      <!-- 主要内容部分 -->
       <el-main class="main">
-
         <router-view></router-view>
-
       </el-main>
     </el-container>
   </el-container>
@@ -106,24 +45,40 @@
 
 <script>
 export default {
-    beforeCreate() {
-        if(!localStorage.getItem('token')) {
-            this.$router.push({
-                 name: 'login'
-            })
-            this.$message.warning('请登录后查看')
-        }
+  beforeCreate() {
+    // if (!localStorage.getItem("token")) {
+    //   this.$router.push({
+    //     name: "login"
+    //   });
+    //   this.$message.warning("请登录后查看");
+    // }
+  },
+   created() {
+      this.aside()
     },
+  data() {
+    return {
+      aside1:[]
+    }
+  },
   methods: {
+    // 调用方法a
+    // 侧边栏动态生成
+    async aside() {
+      const asidedata = await this.$http.get('menus');
+      console.log(asidedata.data.data)
+      this.aside1 = asidedata.data.data
+    },
+    // 登录页面
     loginout() {
-        // 1.清除localStorage
-        localStorage.clear()
-        // 2.页面跳转到登录页面
-        this.$router.push({
-            name: 'login'
-        })
-        // 3.提示退出消息
-        this.$message.success('退出成功');
+      // 1.清除localStorage
+      localStorage.clear();
+      // 2.页面跳转到登录页面
+      this.$router.push({
+        name: "login"
+      });
+      // 3.提示退出消息
+      this.$message.success("退出成功");
     }
   }
 };
@@ -145,7 +100,9 @@ export default {
   line-height: 60px;
 }
 .main {
-  background: #E8EDF3;
+  background: #e8edf3;
 }
-
 </style>
+
+
+

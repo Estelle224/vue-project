@@ -4,10 +4,12 @@ import Router from 'vue-router'
 import Login from '@/components/login.vue'
 import Home from '@/components/home.vue'
 import User from '@/components/user.vue'
+import rights from '@/components/rights.vue'
+import roles from '@/components/roles.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       name: 'home',
@@ -15,9 +17,19 @@ export default new Router({
       component: Home,
       children: [
         {
-          name: 'user',
-          path: '/user',
+          name: 'users',
+          path: '/users',
           component: User
+        },
+        {
+          name: 'rights',
+          path: '/rights',
+          component: rights
+        },
+        {
+          name: 'roles',
+          path: '/roles',
+          component: roles
         }
       ]
 
@@ -29,3 +41,20 @@ export default new Router({
 
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  console.log(to, from)
+  if (to.name === 'login') {
+    next()
+  } else {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      router.push({
+        name: 'login'
+      })
+    } else {
+      next()
+    }
+  }
+})
+export default router

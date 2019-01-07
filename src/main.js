@@ -9,12 +9,16 @@ import 'element-ui/lib/theme-chalk/index.css'
 // 引入moment文件
 import moment from 'moment'
 // 引入样式文件base.css
+import myBread from '@/components/myBread.vue'
+
 import '@/assets/base.css'
 // 引入axios文件
-import axios from 'axios'
-axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
-Vue.prototype.$http = axios
 
+import http from './plugins/http'
+// 引入自定义面包屑组件
+Vue.use(http)
+// 要想在全局使用面包屑组件---声明全局面包屑组件
+Vue.component('my-bread', myBread)
 // 全局过滤器---处理日期格式
 Vue.filter('formdata', (v) => {
   return moment(v).format('YYYY-MM-DD')
